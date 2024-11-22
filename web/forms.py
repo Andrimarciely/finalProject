@@ -75,4 +75,6 @@ class ProposalForm(forms.ModelForm):
             "id",
             "client",
             "objective",
+            "collection_date",
+            "legal_basis"
        ]

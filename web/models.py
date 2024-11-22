@@ -112,6 +112,7 @@ class Client(Company):
         return self.corporate_name
 
 class Event(models.Model):
+    # o Django tem um tipo próprio pra fazer Enum
     priorities_list = (
         ('0', 'Sem prioridade'),
         ('1', 'Normal'),

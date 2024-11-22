@@ -60,6 +60,6 @@ class ServiceAdmin(admin.ModelAdmin):
 
 @admin.register(Proposal)
 class ProposalAdmin(admin.ModelAdmin):
-    list_display = ("objective",)
+    list_display = ("id", "client","objective","collection_date")
     list_display_links = ("objective",)
     search_fields = ("objective",)
