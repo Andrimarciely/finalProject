@@ -1,4 +1,4 @@
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 from .models import Event, Client, Matrix, Sample, Document, Product , Service, Proposal
@@ -8,6 +8,59 @@ from django.shortcuts import render
 import calendar
 from calendar import HTMLCalendar
 from datetime import datetime
+
+#Import PDF stuff
+
+from django.http import FileResponse
+import io
+from reportlab.pdfgen import canvas
+from reportlab.lib.units import inch
+from reportlab.lib.pagesizes import letter
+
+#Generate PDF
+def proposal_pdf(request):
+    #Create Bytestream buffer
+    buf=io.BytesIO()
+    #Create a canvas
+    c = canvas.Canvas(buf, pagesize=letter, bottomup=0)
+    #Create a text object
+    textob = c.beginText()
+    textob.setTextOrigin(inch, inch)
+    textob.setFont("Helvetica", 14)
+
+    #Add some lines of text
+    #lines = [
+    #    "This is line 1",
+    #    "This is line 2",
+    #    "This is line 3",
+    # ]
+    #Designate The Model
+    proposals = Proposal.objects.all()
+
+    #Create blank list
+    lines = []
+    #Loop
+
+    for proposal in proposals:
+        lines.append(f"Cliente: {proposal.client}")
+        lines.append(f"Objetivo: {proposal.objective}")
+        lines.append(f"Data de Coleta: {proposal.collection_date.strftime('%d/%m/%Y')}")
+        lines.append(f"Base Legal: {proposal.legal_basis}")
+        lines.append(" ")
+
+
+    for line in lines:
+        textob.textLine(line)
+
+    # Finish Up
+    c.drawText(textob)
+    c.showPage()
+    c.save()
+    buf.seek(0)
+
+    # Return something
+    return FileResponse(buf, as_attachment=True, filename='proposal.pdf')
+
 
 def home(request, year=datetime.now().year, month=datetime.now().strftime('%B')):
     name = "Andrimarciely"

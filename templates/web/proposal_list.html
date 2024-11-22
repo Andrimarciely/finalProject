@@ -2,7 +2,7 @@
 {% block content %}
   <h2>
     Proposta
-    <small>| <a href="{% url 'proposal-create' %}">Nova</a></small>
+    <small>| <a href="{% url 'proposal-create' %}">Nova</a> | <a href="{% url 'proposal_pdf' %}">Imprimir</a></small>
   </h2>
   {% if object_list %}
     <table class="table">

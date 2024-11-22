@@ -3,6 +3,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+    path("root", views.home, name="root"),
     path("", views.home, name= "home"),
     path("home.html", views.home, name= "home"),
     path("event/", views.EventListView.as_view(), name="event-list"),
@@ -91,9 +92,9 @@ urlpatterns = [
        views.ServiceDeleteView.as_view(),
        name="service-delete",
     ),
-
     path("proposal", views.ProposalListView.as_view(), name="proposal-list"),
     path("proposal/new", views.ProposalCreateView.as_view(), name="proposal-create"),
+    path("proposal/proposal_pdf", views.proposal_pdf, name='proposal_pdf'),
     path(
         "proposal/<int:pk>/edit",
         views.ProposalUpdateView.as_view(),
